@@ -5,19 +5,19 @@ from django.core.validators import MinValueValidator, MaxValueValidator
 # Create your models here.
 
 class Department(models.Model):
-    dept_id = models.CharField(max_length = 20, primary_key = True)
+    dept_id = models.CharField(max_length = 5, primary_key = True)
     dept_name = models.CharField(max_length = 30)
 
     def __str__(self):
         return ''+self.dept_name
 
 class TeacherProfile(models.Model):
-    teacher_id = models.CharField(max_length = 10, primary_key = True)
+    teacher_id = models.CharField(max_length = 5, primary_key = True)
     teacher_name = models.CharField(max_length = 40)
     dept_id = models.ForeignKey(Department, db_column = 'dept_id', on_delete = models.CASCADE)
-    teacher_shortCode = models.CharField(max_length = 5)
+    teacher_shortCode = models.CharField(max_length = 10)
     teacher_designation = models.CharField(max_length = 20)
-    teachers_university = models.CharField(max_length = 20)
+    teachers_university = models.CharField(max_length = 40)
 
     def __str__(self):
         return ''+self.teacher_shortCode
@@ -48,24 +48,24 @@ class ExaminationSystem(models.Model):
 
     def __str__(self):
         return ''+self.examination_level
+
 class SubjectCreation(models.Model):
     CREDIT = (
-        ('0.75', '0.75 Credit'),
-        ('1.00', '1.00 Credit'),
-        ('1.50', '1.50 Credit'),
-        ('2.00', '2.00 Credit'),
-        ('3.00', '3.00 Credit'),
-        ('4.00', '4.00 Credit'),
+        ('.75C', '0.75 Credit'),
+        ('1.0C', '1.00 Credit'),
+        ('1.5C', '1.50 Credit'),
+        ('2.0C', '2.00 Credit'),
+        ('3.0C', '3.00 Credit'),
+        ('4.0C', '4.00 Credit'),
     )
-    sibject_id = models.CharField(max_length = 5, primary_key = True)
+    course_id = models.CharField(max_length = 8, primary_key = True)
     select_department = models.ForeignKey(Department, db_column = 'dept_id', on_delete = models.CASCADE)
     select_semester_year = models.ForeignKey(ExaminationSystem, db_column = 'semester_selection', on_delete = models.CASCADE)
-    course_code = models.IntegerField()
     course_name = models.CharField(max_length = 30)
-    course_credit = models.CharField(max_length = 1, choices = CREDIT)
+    course_credit = models.CharField(max_length = 4, choices = CREDIT)
 
     def __str__(self):
-        return ''+self.course_code
+        return ''+self.course_id
 
 
 #END OF BASIC MODELS
@@ -84,9 +84,7 @@ class ExamProposal(models.Model):
 class TheoryExamRoutineGenarator(models.Model):
     theory_exam_id = models.CharField(max_length = 5, primary_key = True)
     theory_exam_date_select = models.DateField()
-    theory_exam_course_code_select = models.ForeignKey(SubjectCreation, db_column = 'course_code', related_name="theoryExamCode", on_delete=models.CASCADE)
-    theory_exam_course_name_select = models.ForeignKey(SubjectCreation, db_column = 'course_name', related_name="theoryExamName", on_delete=models.CASCADE)
-    theory_exam_course_credit_select = models.ForeignKey(SubjectCreation, db_column = 'course_credit', related_name="theoryExamCredit", on_delete=models.CASCADE)
+    theory_exam_course_code_select = models.ManyToManyField(SubjectCreation)
     theory_exam_start_time_select = models.TimeField()
     theory_exam_end_time_select = models.TimeField()
 
@@ -106,9 +104,7 @@ class TheoryExamTabulatorGenarator(models.Model):
 class LabExamRoutineGenarator(models.Model):
     lab_exam_id = models.CharField(max_length = 5, primary_key = True)
     lab_exam_date_select = models.DateField()
-    lab_exam_course_code_select = models.ForeignKey(SubjectCreation, db_column = 'course_code', related_name="labExamCode", on_delete=models.CASCADE)
-    lab_exam_course_name_select = models.ForeignKey(SubjectCreation, db_column = 'course_name', related_name="labExamName", on_delete=models.CASCADE)
-    lab_exam_course_credit_select = models.ForeignKey(SubjectCreation, db_column = 'course_credit', related_name="labExamCredit", on_delete=models.CASCADE)
+    lab_exam_course_code_select = models.ManyToManyField(SubjectCreation)
     lab_exam_start_time_select = models.TimeField()
     lab_exam_end_time_select = models.TimeField()
 
@@ -129,9 +125,7 @@ class LabExamTabulatorGenarator(models.Model):
 class VivaVoceExamRoutineGenarator(models.Model):
     viva_voce_id = models.CharField(max_length = 5, primary_key = True)
     viva_voce_date_select = models.DateField()
-    viva_voce_course_code_select = models.ForeignKey(SubjectCreation, db_column = 'course_code', related_name="VivaVoceExamCode", on_delete=models.CASCADE)
-    viva_voce_course_name_select = models.ForeignKey(SubjectCreation, db_column = 'course_name', related_name="VivaVoceExamName", on_delete=models.CASCADE)
-    viva_voce_course_credit_select = models.ForeignKey(SubjectCreation, db_column = 'course_credit', related_name="VivaVoceExamCredit", on_delete=models.CASCADE)
+    viva_voce_course_code_select = models.ManyToManyField(SubjectCreation)
     viva_voce_start_time_select = models.TimeField()
     viva_voce_end_time_select = models.TimeField()
 
