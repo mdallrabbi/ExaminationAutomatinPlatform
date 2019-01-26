@@ -1,0 +1,18 @@
+{% extends "index.html" %}
+<!--title blog -->
+{%block title%}
+Login
+{%endblock%}
+
+<!-- Blog Content-->
+{%block content%}
+<div class="container">
+        <h2>Login</h2>
+        <form method="post">
+            {% csrf_token %}
+            {{form.as_p}}
+            <button class="btn btn-success ml-2" type="submit">Login</button>
+        
+        </form>
+</div>
+{%endblock content%}

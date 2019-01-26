@@ -1,6 +1,32 @@
 {% extends 'index.html' %}
+{% load crispy_forms_tags %}
 
 {% block title %}
-    <title>Lab Exam Routine Creator Query</title>
+    <title>Lab Exam Routine Query</title>
 {% endblock title %}
+
+{% block formtitle %}
+    <h3 class="mt-2">Add Lab Exam Routine</h3>
+{% endblock formtitle %}
     
+{%block content%}
+
+{% if user.is_authenticated %}
+<div class="container">
+    <form method="post">
+        
+        {%csrf_token%}
+        {{form|crispy}}
+
+        <button class="btn btn-success ml-2" type="submit">Save Lab Exam Routine</button>
+    </form>
+</div>
+{% else %}
+<p>You don't have authorization to this page</p>
+{% endif %}
+
+{%endblock content%}
+
+
+
+
