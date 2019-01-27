@@ -1,9 +1,7 @@
 from django.urls import reverse_lazy
 from django.views.generic import DetailView, ListView, CreateView
 from django.views.generic.edit import CreateView, DeleteView, UpdateView
-from .models import Department, TeacherProfile, ExaminationSystem, SubjectCreation
-from .models import ExamProposal, TheoryExamRoutineGenarator, TheoryExamTabulatorGenarator, LabExamRoutineGenarator, LabExamTabulatorGenarator, VivaVoceExamRoutineGenarator, VivaVoceExamTabulatorGenarator
-from .models import GenarateBillOfTheExaminer, DoneDutyTasksGenarator
+from .models import *
 # Create your views here.
 
 class CreateDepartmentQuery(CreateView):
